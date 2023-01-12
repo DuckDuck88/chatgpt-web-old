@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!--自适应屏幕大小-->
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 
 <head>
@@ -24,23 +23,23 @@
 
 <body>
     <div align="center">
-        <h2>Fake ChatGPT</h2>
-        <div>注意：接口返回可能比较慢（服务在国外，并且OpenAI返回速度也比较慢），提交后需要等待处理完成，请勿重复提交！！！</div>
-        <div>~接口返回有长度限制~</div>
+        <h2>Metastem ChatAI</h2>
+        <div>Please wait in patience!</div>
+        <div>The lenth of call back has limitation!</div>
         <hr />
         {% if message %} {{ message }} {% endif %}
         <form method="post" onsubmit="submit.disabled=true">
-            <textarea style="width:35%;" name="question" placeholder="点击这里输入问题" rows="11" id="form"></textarea>
+            <textarea style="width:35%;" name="question" placeholder="Ask..." rows="11" id="form"></textarea>
             <br>
-            <input type="submit" style="width:150px;height:50px;background-color:green;font-size:30px" value="提交" id="submit" />
+            <input type="submit" style="width:150px;height:50px;background-color:green;font-size:30px" value="Go" id="submit" />
         </form>
-        <div id="loading" style="display:none; color:red"><b>后端正在处理，请稍等...</b></div>
+        <div id="loading" style="display:none; color:red"><b>Typing...</b></div>
         {% if question %}
-        <div style="text-align: left"><b>人类:</b>
+        <div style="text-align: left"><b>Human:</b>
             <pre id="question">{{ question }}</pre>
         </div>
         <hr />
-        <div style="text-align: left"><b>人工智障:</b>
+        <div style="text-align: left"><b>AI:</b>
             <pre style="text-align:left; white-space: pre-wrap;" id="res">{{ res }}</pre>
         </div>
         {% endif %}
