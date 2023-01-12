@@ -26,13 +26,13 @@ def get_request_json():
     if request.method == 'POST':
         if len(request.form['question']) < 1:
             return render_template(
-                'chat.html', question="null", res="问题不能为空")
+                'chat.html', question="null", res="Can't be empty")
         question = request.form['question']
         print("======================================")
-        print("接到请求:", question)
+        print("Recieved:", question)
         res = get_completion(question)
-        print("问题：\n", question)
-        print("答案：\n", res)
+        print("Q：\n", question)
+        print("A：\n", res)
 
         return render_template('chat.html', question=question, res=str(res))
     return render_template('chat.html', question=0)
