@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!--自适应屏幕大小-->
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 
 <head>
     <!-- <link rel="shortcut icon" href="" type="image/x-icon" /> -->
     <meta charset="UTF-8">
-    <title>OpenAI</title>
+    <title>OpenAI dev</title>
     <style>
       body {
         color: #333;
@@ -23,17 +24,18 @@
 
 <body>
     <div align="center">
-        <h2>Metastem ChatAI</h2>
-        <div>Please wait in patience!</div>
-        <div>The lenth of call back has limitation!</div>
+        <h2>Fake ChatGPT</h2>
+        <div>注意：</div>
+        <div>1. 请勿重复提交</div>
+        <div>2. 接口返回有长度限制</div>
         <hr />
         {% if message %} {{ message }} {% endif %}
         <form method="post" onsubmit="submit.disabled=true">
-            <textarea style="width:35%;" name="question" placeholder="Ask..." rows="11" id="form"></textarea>
+            <textarea style="width:35%;" name="question" placeholder="点击这里输入问题" rows="11" id="form"></textarea>
             <br>
-            <input type="submit" style="width:150px;height:50px;background-color:green;font-size:30px" value="Go" id="submit" />
+            <input type="submit" style="width:150px;height:50px;background-color:green;font-size:30px" value="提交" id="submit" />
         </form>
-        <div id="loading" style="display:none; color:red"><b>Typing...</b></div>
+        <div id="loading" style="display:none; color:red"><b>后端正在处理，请稍等...</b></div>
         {% if question %}
         <div style="text-align: left"><b>Human:</b>
             <pre id="question">{{ question }}</pre>
