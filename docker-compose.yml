@@ -1,7 +1,7 @@
 version: '3'
 services:
   chatgpt:
-    image: sheepgreen/chatgpt-web #如果是arm架构，需要改成chatgpt-web:arm
+    image: chatgpt-web:latest  #如果是arm架构，需要改成chatgpt-web:arm
     container_name: webchat
     environment:
       - OPENAI_API_KEY=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

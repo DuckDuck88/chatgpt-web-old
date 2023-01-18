@@ -8,6 +8,6 @@ ENV PATH="/home/appuser/.local/bin:$PATH"
 
 COPY . .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 CMD ["gunicorn", "-c", "gunicorn.py", "app:server"]
