@@ -7,7 +7,8 @@ from common.log import logger
 from config import conf
 
 token = conf().get('wx_public_token', '')
-myrobot = WeRoBot(token=token)
+app_id = conf().get('wx_public_appid','')
+myrobot = WeRoBot(token=token, app_id=app_id)
 
 
 class WxPublicChannel(Channel):
@@ -40,7 +41,7 @@ class WxPublicChannel(Channel):
             logger.exception(f'鉴权异常! {e}')
             return str(e)
 
-    @myrobot.handler
+    @myrobot.text
     def handle(self, message):
         logger.info(f'收到公众号请求 {message}')
         try:

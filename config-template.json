@@ -1,3 +1,7 @@
 {
-  "open_ai_api_key": "YOUR API KEY"
+  "open_ai_api_key": "sk-xxxxxxxxx",
+  "wx_appid": "",
+  "wx_app_token": "",
+  "wx_public_appid":"xxxxxxxxx",
+  "wx_public_token": "xxxxxxxxx"
 }

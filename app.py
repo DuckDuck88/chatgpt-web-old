@@ -10,11 +10,10 @@ from channel.web.web_channel import WebChannel
 from channel.wxapp.wxapp_channel import WxAppChannel
 from channel.wxpublic.wxpublic_channel import myrobot
 from common.log import logger
-from config import load_config, conf
+from config import conf
+
 
 server = Flask(__name__)
-
-load_config()
 server.config.from_mapping(conf())
 
 
@@ -61,11 +60,11 @@ def chat_replay_wxapp():
 
 
 # 微信公众号
-server.add_url_rule(rule='/wxpublic/',  # WeRoBot 挂载地址
+server.add_url_rule(rule='/chatrest/wxpublic/',  # WeRoBot 挂载地址
                     endpoint='werobot',  # Flask 的 endpoint
                     view_func=make_view(myrobot),
                     methods=['GET', 'POST'])
 
 # flask 入口模式
 if __name__ == '__main__':
-    server.run(debug=True, host='0.0.0.0', port=80)
+    server.run(debug=True, host='0.0.0.0', port=8888)
