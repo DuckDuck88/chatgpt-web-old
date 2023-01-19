@@ -9,8 +9,8 @@ daemon = 'false'
 # 工作模式协程
 worker_class = 'gevent'
 worker_connections = 2000
-# pidfile = '/var/run/gunicorn.pid'
-# accesslog = '/var/log/gunicorn_acess.log'
-# errorlog = '/var/log/gunicorn_error.log'
+pidfile = '/var/run/gunicorn.pid'
+accesslog = '/var/log/gunicorn_acess.log'
+errorlog = '/var/log/gunicorn_error.log'
 loglevel = 'debug'
 reload = False

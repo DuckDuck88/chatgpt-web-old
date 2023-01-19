@@ -3,40 +3,11 @@
 """
 web channel
 """
-import os
 
-from flask import Flask, request, render_template
+from flask import render_template
 
 from channel.channel import Channel
 from common.log import logger
-from config import conf, load_config
-
-parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-server = Flask(__name__, template_folder=f'{parent_dir}/templates')
-load_config()
-server.config.from_mapping(conf())
-
-
-@server.route('/chat', methods=['GET', 'POST'])
-def chat_replay_html():
-    # logger.info(f'Received request {request.method}, {request.get_json()}')
-    if request.method == 'GET':
-        # 校验
-        return WebChannel().reply_template(request)
-    elif request.method == 'POST':
-        # 发送消息
-        return WebChannel().handle_html(request)
-
-
-@server.route('/chat2', methods=['GET', 'POST'])
-def chat_replay_json():
-    # logger.info(f'Received request {request.method}, {request.get_json()}')
-    if request.method == 'GET':
-        # 校验
-        return WebChannel().verify(request)
-    elif request.method == 'POST':
-        # 发送消息
-        return WebChannel().handle(request)
 
 
 def failure_reply(reply_text, code=400):
@@ -60,7 +31,9 @@ class WebChannel(Channel):
         pass
 
     def startup(self):
-        server.run(debug=True, host='0.0.0.0', port=80)
+        pass
+
+    #     server.run(debug=True, host='0.0.0.0', port=80)
 
     def handle(self, request):
         try:

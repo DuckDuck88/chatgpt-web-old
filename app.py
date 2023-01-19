@@ -3,38 +3,63 @@
 # server.config.from_mapping(conf())
 # bot = create_bot('openAI')
 
-from channel import channel_factory
+from flask import Flask, request
+
+from channel.web.web_channel import WebChannel
+from channel.wxapp.wxapp_channel import WxAppChannel
 from common.log import logger
+from config import load_config, conf
 
-# @server.route('/chat', methods=['GET', 'POST'])
-# def chat_replay():
-#     logger.info(f'Received request {request.method}, {request.get_json()}')
-#     if request.method == 'GET':
-#         # 校验
-#         return bot.get_completion(request)
-#     elif request.method == 'POST':
-#         # 发送消息
-#         data = request.get_json().get("question")
-#         return bot.reply(data)
-# encoding:utf-8
+server = Flask(__name__)
+load_config()
+server.config.from_mapping(conf())
 
-# server
 
+# 前后端不分离
+@server.route('/chat', methods=['GET', 'POST'])
+def chat_replay_html():
+    logger.info(f'请求类型是否为 json:{request.is_json}')
+    # logger.info(f'Received request {request.method}, {request.get_json()}')
+    if request.method == 'GET':
+        # 校验
+        return WebChannel().reply_template(request)
+    elif request.method == 'POST':
+        # 发送消息
+        return WebChannel().handle_html(request)
+
+
+# 前后端分离
+@server.route('/chat2', methods=['GET', 'POST'])
+def chat_replay_web():
+    logger.info(f'请求类型是否为 json:{request.is_json}')
+    # logger.info(f'Received request {request.method}, {request.get_json()}')
+    if request.method == 'GET':
+        # 校验
+        return WebChannel().verify(request)
+    elif request.method == 'POST':
+        # 发送消息
+        return WebChannel().handle(request)
+
+
+# 微信小程序
+@server.route('/wxappchat', methods=['GET', 'POST'])
+def chat_replay_wxapp():
+    logger.info(f'Received request {request.method}, {request.get_json()}')
+    wxapp_channel = WxAppChannel()
+    verify = wxapp_channel.verify(request)
+    if not verify:
+        return wxapp_channel.failure_reply('请求校验失败，非来自微信小程序', 400)
+    if request.method == 'GET':
+        # 校验
+        return wxapp_channel.reply(request, None)
+    elif request.method == 'POST':
+        # 发送消息
+        return wxapp_channel.handle(request)
+
+
+# 微信公众号
+
+
+# flask 入口模式
 if __name__ == '__main__':
-    try:
-        # load config
-
-        # create channel
-        channel_type = 'web'
-        channel = channel_factory.create_channel(channel_type)
-        if channel_type == 'web':
-            logger.info("Channel WEB")
-        logger.info(f'Starting')
-        channel.startup()
-    except Exception as e:
-        logger.error("App startup failed!")
-        logger.exception(e)
-
-# if __name__ == '__main__':
-# server.run(debug=True, host='0.0.0.0', port=80)
-#
+    server.run(debug=True, host='0.0.0.0', port=80)
