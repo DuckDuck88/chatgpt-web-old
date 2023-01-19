@@ -20,7 +20,6 @@ server.config.from_mapping(conf())
 # 前后端不分离
 @server.route('/chat', methods=['GET', 'POST'])
 def chat_replay_html():
-    logger.info(f'请求类型是否为 json:{request.is_json}')
     # logger.info(f'Received request {request.method}, {request.get_json()}')
     if request.method == 'GET':
         # 校验
@@ -33,7 +32,6 @@ def chat_replay_html():
 # 前后端分离
 @server.route('/chat2', methods=['GET', 'POST'])
 def chat_replay_web():
-    logger.info(f'请求类型是否为 json:{request.is_json}')
     # logger.info(f'Received request {request.method}, {request.get_json()}')
     if request.method == 'GET':
         # 校验

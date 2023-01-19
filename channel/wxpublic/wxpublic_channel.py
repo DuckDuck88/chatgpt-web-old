@@ -1,4 +1,5 @@
 import hashlib
+import time
 
 from werobot import WeRoBot
 
@@ -8,8 +9,13 @@ from config import conf
 
 token = conf().get('wx_public_token', '')
 app_id = conf().get('wx_public_appid','')
-myrobot = WeRoBot(token=token, app_id=app_id)
+encoding_aes_key = conf().get('wx_public_encoding_aes_key','')
+myrobot = WeRoBot(token=token, app_id=app_id, encoding_aes_key=encoding_aes_key)
 
+@myrobot.text
+def handle_wx_public_msg(message):
+    logger.info(f'received wx public msg: {message.content}')
+    return WxPublicChannel().handle(message)
 
 class WxPublicChannel(Channel):
     def startup(self):
@@ -41,33 +47,35 @@ class WxPublicChannel(Channel):
             logger.exception(f'鉴权异常! {e}')
             return str(e)
 
-    @myrobot.text
     def handle(self, message):
-        logger.info(f'收到公众号请求 {message}')
+        start_time = time.time()
         try:
+            # print(message.content)
             query = message.content
         except Exception as e:
             logger.exception(f'请求异常！{e}')
-            return self.failure_reply(e)
+            return str(e)
         try:
-            reply_text = self.build_reply_content(query, "openAI", None)
+            reply_text = self.build_reply_content(query.strip(), "openAI", None)
+            end_time = time.time()-start_time
+            logger.info(f'请求耗时：{str(end_time)}')
         except Exception as e:
-            return self.failure_reply(e)
-        return self.success_reply(reply_text)
+            return str(e)
+        return reply_text.strip()
 
     def reply(self, msg, receiver):
         pass
 
-    def failure_reply(self, reply_text, code=400):
-        return {
-            "code": code,
-            "message": "failed",
-            "reply": reply_text
-        }
+    # def failure_reply(self, reply_text, code=400):
+    #     return {
+    #         "code": code,
+    #         "message": "failed",
+    #         "reply": reply_text
+    #     }
 
-    def success_reply(self, reply_text):
-        return {
-            "code": 200,
-            "message": "success",
-            "reply": reply_text
-        }
+    # def success_reply(self, reply_text):
+    #     return {
+    #         "code": 200,
+    #         "message": "success",
+    #         "reply": reply_text
+    #     }
