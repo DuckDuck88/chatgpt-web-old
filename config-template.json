@@ -1,7 +1,8 @@
 {
-  "open_ai_api_key": "sk-xxxxxxxxx",
-  "wx_appid": "",
-  "wx_app_token": "",
-  "wx_public_appid":"xxxxxxxxx",
-  "wx_public_token": "xxxxxxxxx"
+    "open_ai_api_key":"sk-xxx",
+    "wx_appid": "",
+    "wx_app_token": "",
+    "wx_public_appid":"xxx",
+    "wx_public_encoding_aes_key":"xxx",
+    "wx_public_token": "xxx"
 }
