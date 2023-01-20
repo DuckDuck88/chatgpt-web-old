@@ -22,7 +22,7 @@ def bottom_up_strategy(message):
 
 
 @wxrobot.text
-def handle_wx_public_msg(message):
+def handle_wx_public_msg(message, session):
     logger.info(f'received wx public msg: {message.content}')
     return wx_public_channel.handle(message)
 
