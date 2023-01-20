@@ -1,21 +1,9 @@
 import hashlib
 import time
 
-from werobot import WeRoBot
-
 from channel.channel import Channel
 from common.log import logger
-from config import conf
 
-token = conf().get('wx_public_token', '')
-app_id = conf().get('wx_public_appid','')
-encoding_aes_key = conf().get('wx_public_encoding_aes_key','')
-myrobot = WeRoBot(token=token, app_id=app_id, encoding_aes_key=encoding_aes_key)
-
-@myrobot.text
-def handle_wx_public_msg(message):
-    logger.info(f'received wx public msg: {message.content}')
-    return WxPublicChannel().handle(message)
 
 class WxPublicChannel(Channel):
     def startup(self):
@@ -57,7 +45,7 @@ class WxPublicChannel(Channel):
             return str(e)
         try:
             reply_text = self.build_reply_content(query.strip(), "openAI", None)
-            end_time = time.time()-start_time
+            end_time = time.time() - start_time
             logger.info(f'请求耗时：{str(end_time)}')
         except Exception as e:
             return str(e)
