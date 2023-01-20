@@ -1,11 +1,30 @@
 """
 Message sending channel abstract class
 """
+import threading
 
 from bridge.bridge import Bridge
 
 
 class Channel(object):
+    _lock = threading.Lock()
+    _instance = None
+
+    @classmethod
+    def get_instance(cls, ins_name):
+        """
+        实现单例模式
+        """
+        if cls._instance is not None:
+            return cls._instance
+
+        with cls._lock:
+            if cls._instance is not None:
+                return cls._instance
+
+            cls._instance = ins_name()
+            return cls._instance
+
     def startup(self):
         """
         init channel

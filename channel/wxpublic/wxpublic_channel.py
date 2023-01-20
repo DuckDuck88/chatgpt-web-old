@@ -6,6 +6,7 @@ from common.log import logger
 
 
 class WxPublicChannel(Channel):
+
     def startup(self):
         pass
 

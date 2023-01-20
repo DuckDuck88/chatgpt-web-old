@@ -10,22 +10,6 @@ from channel.channel import Channel
 from common.log import logger
 
 
-def failure_reply(reply_text, code=400):
-    return {
-        "code": code,
-        "message": "failed",
-        "reply": reply_text
-    }
-
-
-def success_reply(reply_text):
-    return {
-        "code": 200,
-        "message": "success",
-        "reply": reply_text
-    }
-
-
 class WebChannel(Channel):
     def __init__(self):
         pass
@@ -40,12 +24,12 @@ class WebChannel(Channel):
             query = request.get_json().get("question")
         except Exception as e:
             logger.exception(f'请求异常！{e}')
-            return failure_reply(e)
+            return self.failure_reply(e)
         try:
             reply_text = self.build_reply_content(query, "openAI", None)
         except Exception as e:
-            return failure_reply(e)
-        return success_reply(reply_text)
+            return self.failure_reply(e)
+        return self.success_reply(reply_text)
 
     def reply(self, msg, receiver):
         """
@@ -69,13 +53,27 @@ class WebChannel(Channel):
             query = request.form['question']
         except Exception as e:
             logger.exception(f'请求异常！{e}')
-            return failure_reply(e)
+            return self.failure_reply(e)
         try:
             reply_text = self.build_reply_content(query, "openAI", None)
         except Exception as e:
-            return failure_reply(e)
+            return self.failure_reply(e)
         return render_template('chat.html', question=query,
                                res=str(reply_text))
 
     def reply_template(self, request):
         return render_template('chat.html', question=0)
+
+    def failure_reply(self, reply_text, code=400):
+        return {
+            "code": code,
+            "message": "failed",
+            "reply": reply_text
+        }
+
+    def success_reply(self, reply_text):
+        return {
+            "code": 200,
+            "message": "success",
+            "reply": reply_text
+        }
