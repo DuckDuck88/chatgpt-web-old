@@ -3,18 +3,22 @@
 # server.config.from_mapping(conf())
 # bot = create_bot('openAI')
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 from werobot.contrib.flask import make_view
 
 from channel.web.web_channel import WebChannel
 from channel.wxapp.wxapp_channel import WxAppChannel
-from channel.wxpublic.wxpublic_channel import myrobot
 from common.log import logger
 from config import conf
-
+from thirdapp.wx_public_admin.wx_public_admin import myrobot
 
 server = Flask(__name__)
 server.config.from_mapping(conf())
+
+
+@server.route('/', methods=['GET'])
+def hello_world():
+    return render_template('hello.html')
 
 
 # 前后端不分离
