@@ -38,7 +38,7 @@ class OpenAIBot(Bot):
                 "message": None,
                 "reply": '问题内容不能为空!'
             })
-        logger.info("======================================")
+        logger.info("--------------------------------------")
         reply_text = self._get_chat_reply(query)
         logger.info(f"Q：{query}\nA: {reply_text}\n")
         return reply_text
