@@ -17,8 +17,9 @@ def bottom_up_strategy(message):
     """
     兜底策略，其他 handle 没有给出回复时使用此策略
     """
-    logger.info(f'received wx public msg: {message.__dict__}')
-    return "这个问题有些复杂，公众号大大要 15s 内给出回复，小的办不到 ಥ_ಥ "
+    if message.type == 'text':
+        logger.info(f'received wx public msg: {message.content}')
+        return "这个问题有些复杂，公众号大大要 15s 内给出回复，小的办不到 ಥ_ಥ "
 
 
 @wxrobot.text

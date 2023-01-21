@@ -3,11 +3,8 @@ import hashlib
 import time
 from concurrent.futures import ThreadPoolExecutor
 
-from werobot import WeRoBot
-
 from channel.channel import Channel
 from common.log import logger
-from config import conf
 
 # token = conf().get('wx_public_token', '')
 # app_id = conf().get('wx_public_appid','')
@@ -24,9 +21,7 @@ msg_content_cache = {}
 
 
 class WxPublicChannel(Channel):
-
     pool = ThreadPoolExecutor(max_workers=8)
-    
 
     def startup(self):
         pass
@@ -61,23 +56,23 @@ class WxPublicChannel(Channel):
         """
         预处理，用于处理超时问题。
         """
-        if msg_content_cache.get(message.content,'') != '':
-            return msg_content_cache[message.content]  # 如果已存在同样的请求直接返回。
+        if msg_content_cache.get(message.content, '') != '':
+            return msg_content_cache[message.content]  # 如果已存在同样请求直接返回。
         msg_id_cache[message.message_id] = msg_id_cache.get(message.message_id, 4) - 1
-        if msg_id_cache[message.message_id] >= 3: # 判断 message 是否已经存在
+        if msg_id_cache[message.message_id] >= 3:  # 判断 message 是否已经存在
             msg_content_cache[message.content] = ''
 
             # 启动一个新线程，用于构建返回值
             thread_future = self.pool.submit(self.handle, message.content)
             now = datetime.datetime.now()
-            timeout = now + datetime.timedelta(seconds=msg_id_cache[message.message_id]*5-0.5)
-            print(f'进入超时判断逻辑，当前超时时间 {msg_id_cache[message.message_id]*5} {timeout}')
+            timeout = now + datetime.timedelta(seconds=msg_id_cache[message.message_id] * 5 - 0.5)
+            logger.info(f'进入超时判断逻辑，当前超时时间 {msg_id_cache[message.message_id] * 5} {timeout}')
             while thread_future.running() and now < timeout:
-               now = datetime.datetime.now()
-               time.sleep(0.1)
+                now = datetime.datetime.now()
+                time.sleep(0.1)
             # 超时
             if now < timeout and thread_future.done():
-                print(f'未超时且完成返回')
+                logger.info(f'未超时且完成返回')
                 result = thread_future.result()
                 msg_content_cache[message.content] = result
                 return result
@@ -85,11 +80,11 @@ class WxPublicChannel(Channel):
         else:
             logger.info(f'session 中存在对应请求，判断是否存在返回值，res={msg_content_cache[message.content]}')
             now = datetime.datetime.now()
-            timeout = now + datetime.timedelta(seconds=msg_id_cache[message.message_id]*5-0.5)
-            print(f'进入超时判断逻辑，当前超时时间 {msg_id_cache[message.message_id]*5} {timeout}')
+            timeout = now + datetime.timedelta(seconds=msg_id_cache[message.message_id] * 5 - 0.5)
+            logger.info(f'进入超时判断逻辑，当前超时时间 {msg_id_cache[message.message_id] * 5} {timeout}')
             while msg_content_cache[message.content] == '' and now < timeout:
-               now = datetime.datetime.now()
-               time.sleep(0.1)
+                now = datetime.datetime.now()
+                time.sleep(0.1)
             return msg_content_cache[message.content]
 
     def handle(self, query):
@@ -97,7 +92,7 @@ class WxPublicChannel(Channel):
         try:
             reply_text = self.build_reply_content(query, "openAI", None)
             msg_content_cache[query] = reply_text
-            end_time = time.time()-start_time
+            end_time = time.time() - start_time
             logger.info(f'构建回复耗时：{str(end_time)}')
         except Exception as e:
             logger.exception(f"{e}")
