@@ -57,7 +57,7 @@ class WxPublicChannel(Channel):
         预处理，用于处理超时问题。
         """
         if msg_content_cache.get(message.content, '') != '':
-            logger.info(f'问题已存在，返回混存值')
+            logger.info(f'问题已存在，返回缓存值')
             return msg_content_cache[message.content]  # 如果已存在同样请求直接返回。
         msg_id_cache[message.message_id] = msg_id_cache.get(message.message_id, 4) - 1
         if msg_id_cache[message.message_id] >= 3:  # 判断 message 是否已经存在
