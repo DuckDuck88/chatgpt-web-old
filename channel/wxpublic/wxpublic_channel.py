@@ -57,6 +57,7 @@ class WxPublicChannel(Channel):
         预处理，用于处理超时问题。
         """
         if msg_content_cache.get(message.content, '') != '':
+            logger.info(f'问题已存在，返回混存值')
             return msg_content_cache[message.content]  # 如果已存在同样请求直接返回。
         msg_id_cache[message.message_id] = msg_id_cache.get(message.message_id, 4) - 1
         if msg_id_cache[message.message_id] >= 3:  # 判断 message 是否已经存在
@@ -79,6 +80,7 @@ class WxPublicChannel(Channel):
         # 已存在，如果存在返回结果，则直接返回对应结果
         else:
             logger.info(f'session 中存在对应请求，判断是否存在返回值，res={msg_content_cache[message.content]}')
+            time.sleep(0.1)
             now = datetime.datetime.now()
             timeout = now + datetime.timedelta(seconds=msg_id_cache[message.message_id] * 5 - 0.5)
             logger.info(f'进入超时判断逻辑，当前超时时间 {msg_id_cache[message.message_id] * 5} {timeout}')

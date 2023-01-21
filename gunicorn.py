@@ -1,8 +1,8 @@
 # gunicorn.conf
 # 并行工作进程数
-workers = 4
+workers = 1
 # 指定每个工作者的线程数
-threads = 4
+threads = 8
 bind = '0.0.0.0:8888'
 # 设置守护进程,将进程交给supervisor管理
 daemon = 'false'

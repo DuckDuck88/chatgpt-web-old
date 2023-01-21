@@ -12,14 +12,14 @@ wxrobot = WeRoBot(token=token, app_id=app_id, encoding_aes_key=encoding_aes_key)
 wx_public_channel: WxPublicChannel = WxPublicChannel.get_instance(WxPublicChannel)
 
 
-@wxrobot.handler
-def bottom_up_strategy(message):
-    """
-    兜底策略，其他 handle 没有给出回复时使用此策略
-    """
-    if message.type == 'text':
-        logger.info(f'received wx public msg: {message.content}')
-        return "这个问题有些复杂，公众号大大要 15s 内给出回复，小的办不到 ಥ_ಥ "
+# @wxrobot.handler
+# def bottom_up_strategy(message):
+#     """
+#     兜底策略，其他 handle 没有给出回复时使用此策略
+#     """
+#     if message.type == 'text':
+#         logger.info(f'兜底: received wx public msg: {message.content}')
+#         return "这个问题有些复杂，公众号大大要 15s 内给出回复，小的办不到 ಥ_ಥ "
 
 
 @wxrobot.text

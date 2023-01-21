@@ -2,5 +2,6 @@ openai
 flask
 gunicorn
 gevent
+gthread
 werobot
 Cryptography
