@@ -48,6 +48,15 @@
         </div>
     {% endif %}
 </div>
+<!-- 历史记录 -->
+<div style="position: absolute;right: 0px; width: 30%; height: 100%;">
+    <h3>历史消息</h3>
+    <div style="width:100%; max-height:70%; overflow-y: auto;">
+          {% for history in web_history %}
+              <p>{{ history }}</p>
+          {% endfor %}
+    </div>
+</div>
 </body>
 <script>
     let loading = document.getElementById('loading');

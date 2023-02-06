@@ -38,6 +38,10 @@ def chat_replay_html():
         # 发送消息
         return web_channel.handle_html(request)
 
+@server.route('/chathistory', methods=['GET']) 
+def get_web_history():
+    return web_channel.show_history(request)
+
 
 # 前后端分离
 @server.route('/chat2', methods=['GET', 'POST'])
@@ -74,4 +78,4 @@ server.add_url_rule(rule='/chatrest/wxpublic/',  # WeRoBot 挂载地址
 
 # flask 入口模式
 if __name__ == '__main__':
-    server.run(debug=True, host='0.0.0.0', port=8888)
+    server.run(debug=True, host='0.0.0.0', port=8080)
