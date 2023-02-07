@@ -1,0 +1,7 @@
+.history/
+__pycache__/
+venv/
+config.json
+.idea
+werobot_session.sqlite3
+web_history.db

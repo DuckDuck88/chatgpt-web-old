@@ -1,0 +1,6 @@
+openai
+flask
+gunicorn
+gevent
+werobot
+Cryptography

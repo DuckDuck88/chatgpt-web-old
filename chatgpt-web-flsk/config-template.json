@@ -1,0 +1,14 @@
+{
+    "open_ai_api_key":"sk-xxx",
+    "wx_appid": "",
+    "wx_app_token": "",
+    "wx_public_appid":"xxx",
+    "wx_public_encoding_aes_key":"xxx",
+    "wx_public_token": "xxx",
+
+    "single_chat_prefix": ["bot", "@bot"],
+    "single_chat_reply_prefix": "[bot] ",
+    "group_chat_prefix": ["@bot"],
+    "group_name_white_list": ["ALL-GROUP"],
+    "image_create_prefix": ["画", "看", "找"]
+}
